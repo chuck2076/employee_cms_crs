@@ -1,0 +1,29 @@
+{
+  "name": "employee_cms_crs",
+  "version": "1.0.0",
+  "description": "Content Management System that tracks employees using MySQL, node.js and express.js",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chuck2076/employee_cms_crs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chuck2076/employee_cms_crs/issues"
+  },
+  "homepage": "https://github.com/chuck2076/employee_cms_crs#readme",
+  "dependencies": {
+    "asciiart-logo": "^0.2.6",
+    "chalk": "^4.1.2",
+    "console.table": "^0.10.0",
+    "express": "^4.17.1",
+    "hide-secrets": "^2.0.0",
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.3.2"
+  }
+}
