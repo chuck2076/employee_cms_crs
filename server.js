@@ -55,10 +55,9 @@ const menu = async() => {
             "View All Roles",
             "Add Department",
             "Add Employee",
-            "Add Role",
-            "Delete Department",
-            "Delete Employee",
-            "Delete Role"    
+            "Update Employee",
+            "Add Role"
+   
         ]
         },    
     ]);
@@ -78,10 +77,13 @@ const menu = async() => {
             addDepartment();
             break;
         case "Add Employee":
-            //addEmployee();
+            addEmployee();
             break;
         case "Add Role":
-            //addRole();
+            addRole();
+            break;
+        case "Update Employee":
+            updateEmployee();
             break;
         case "Delete Department":
             //deleteDepartment();
@@ -116,34 +118,113 @@ const getEmployees = async () => {
 }
 
 const addDepartment = async () => {
-    const iDepartment = await db.promise().query("INSERT INTO department (dept) SET?", department(deptInput(dept_name.answer)))
-    console.table(iDepartment[0])
+    const deptInput = await inquirer.prompt ([
+        {
+            type: "input",
+            name: "dept",
+            message: "Add a New Department:"
+            
+        },
+      ]);
+
+    const iDepartment = await db.promise().query("INSERT INTO department SET?", deptInput)
+    console.log("New Department Added")
     menu()
 }
 
-const addRole = async () => {
-    const iRole = await db.promise().query("INSERT INTO roles (title, salary) SET?", roles(rolesInput(title_name.answer, salary_name.answer)))
-    console.table(iRole[0])
+const addRole = async () => { 
+    //Need function to grab all new departments?
+    const departments = await db.promise().query("SELECT * FROM department")
+
+    const rolesInput = await inquirer.prompt ([
+        {
+            type: "input",
+            name: "title",
+            message: "Add a New Employee Role:",
+        },
+        {    
+            type: "input",
+            name: "salary",
+            message: "What is the salary for this role?",
+        },
+        {
+            type: "list",
+            name: "dept_id",
+            message: "Add Department for this role:",
+            choices: departments[0].map((dept) => ({name: dept.dept, value: dept.id}))
+        },
+      ]);
+
+    const iRole = await db.promise().query("INSERT INTO roles SET?", rolesInput)
+    console.log("New Role Added")
     menu()
-}
+};
 
 const addEmployee = async () => {
-    const iEmployee = await db.promise().query("INSERT INTO employee (first_name, last_name, roles_id, manager_id) SET?", employee(employeeInput(first_name_input.answer, last_name_input.answer, employee_role.answer, employee_manager.answer)))
-    console.table(iEmployee[0])
+    // Need function to grab all new roles and departments
+    const roles = await db.promise().query("SELECT roles.title, roles.id FROM roles")
+    const employees = await db.promise().query("SELECT employee.last_name, employee.id FROM employee")
+
+    const employeeInput = await inquirer.prompt ([
+        {
+            type: "input",
+            name: "first_name",
+            message: "What is the first name of the Employee?",
+        },
+        {
+            type: "input",
+            name: "last_name",
+            message: "What is the last name of the Employee?"
+        },
+        {
+            type: "list",
+            name: "roles_id",
+            message: "What is the Employee Role?",
+            choices: roles[0].map((role) => ({name: role.title, value: role.id}))
+    
+        },
+        {
+            type: "list",
+            name: "manager_id",
+            message: "Select the Manager:",
+            choices: employees[0].map((employee) => ({name: employee.last_name, value: employee.id}))
+        },
+    
+      ]);
+
+    const iEmployee = await db.promise().query("INSERT INTO employee SET?", employeeInput)
+    console.log("New Employee Added")
     menu()
-}
+};
+
+const updateEmployee = async () => {
+    const roles = await db.promise().query("SELECT roles.title, roles.id FROM roles")
+    const employees = await db.promise().query("SELECT employee.last_name, employee.id FROM employee")
+
+    const employeeInput = await inquirer.prompt ([
+        {
+            type: "list",
+            name: "id",
+            message: "Select the Employee to Update:",
+            choices: employees[0].map((employee) => ({name: employee.last_name, value: employee.id}))
+        },
+
+        {
+            type: "list",
+            name: "roles_id",
+            message: "What is the new Employee Role?",
+            choices: roles[0].map((role) => ({name: role.title, value: role.id}))
+    
+        },
+    
+      ]);
 
 
 
-// var x = 
-// db.query(`SELECT *
-//     FROM course_names
-//     JOIN department ON course_names.department = department.id;`);
+    const uEmployee = await db.promise().query("UPDATE employee SET roles_id = ? WHERE id = ?", [employeeInput.roles_id, employeeInput.id])
+    console.log("Employee has been updated")
+    menu()
+};
 
-// // Query database
-// db.query('SELECT * FROM course_names', function (err, results) {
-//   console.log(results);
-//   return(results)
-// });
 
 menu();
