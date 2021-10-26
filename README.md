@@ -18,13 +18,12 @@ SO THAT I can organize and plan my business
 
 ## Table of Contents:
 
-- [Installation](https://github.com/chuck2076/Team_Profile_Generator_CRS#installation)
-- [Usage](https://github.com/chuck2076/Team_Profile_Generator_CRS#usage)
-- [Video](https://github.com/chuck2076/Team_Profile_Generator_CRS#video)
-- [Tech Stack](https://github.com/chuck2076/Team_Profile_Generator_CRS#tech-stack)
-- [Contributors](https://github.com/chuck2076/Team_Profile_Generator_CRS#contributors)
-- [Tests](https://github.com/chuck2076/Team_Profile_Generator_CRS#tests)
-- [Questions](https://github.com/chuck2076/Team_Profile_Generator_CRS#questions)
+- [Installation](https://github.com/chuck2076/employee_cms_crs#installation)
+- [Usage](https://github.com/chuck2076/employee_cms_crs#usage)
+- [Video](https://github.com/chuck2076/employee_cms_crs#video)
+- [Tech Stack](https://github.com/chuck2076/employee_cms_crs#tech-stack)
+- [Contributors](https://github.com/chuck2076/employee_cms_crs#contributors)
+- [Questions](https://github.com/chuck2076/employee_cms_crs#questions)
 
 ## Installation:
  > The user should clone the repository and open in preferred coding terminal. User will also need to install the NPM packages located in the Tech Stack for it to properly run.
@@ -43,7 +42,7 @@ SO THAT I can organize and plan my business
 ```
 
  ## Video: 
- > Watch a short video on how to use the Team Profile Generator [Employee Maangement System](https://drive.google.com/file/d/1g3sBRRxBy5ubPMcpiEC1quq0Cnxza7UB/view)
+ > Watch a short video on how to use the Employee Management System [Employee Management System](https://drive.google.com/file/d/1K9O2N9-hQkZT44pv53VG40zivexMCKaR/view)
 
 ## Tech Stack:
  > * Node.js 
