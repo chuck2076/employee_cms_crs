@@ -6,9 +6,6 @@ const consoleTable = require ('console.table')
 const chalk = require('chalk')
 const logo = require('asciiart-logo');
 const inquirer = require('inquirer')
-const department = require('./lib/department')
-const roles = require('./lib/roles')
-const employee = require('./lib/employee')
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -56,7 +53,8 @@ const menu = async() => {
             "Add Department",
             "Add Employee",
             "Update Employee",
-            "Add Role"
+            "Add Role",
+            "Quit"
    
         ]
         },    
@@ -85,15 +83,6 @@ const menu = async() => {
         case "Update Employee":
             updateEmployee();
             break;
-        case "Delete Department":
-            //deleteDepartment();
-            break;
-        case "Delete Employee":
-            //deleteEmployee();
-            break;
-        case "Delete Role":
-            //deleteRole();
-            break;                    
         default:
             break;
     }
