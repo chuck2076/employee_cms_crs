@@ -1,5 +1,5 @@
+//Importing and requiring middleware
 const express = require('express');
-// Import and require mysql2
 const mysql = require('mysql2');
 const hideSecrets = require ('hide-secrets')
 const consoleTable = require ('console.table')
@@ -25,7 +25,7 @@ const db = mysql.createConnection(
     database: 'office_db'
   },
 
-  
+  //Ascii Art for successful connection to DB
   console.log(
     logo({
         name: 'Welcome to the Office Database',
@@ -39,7 +39,7 @@ const db = mysql.createConnection(
     .render()
 )
 );
-
+//Initial menu of choices
 const menu = async() => {
     const answer = await inquirer.prompt ([
         {
@@ -60,7 +60,7 @@ const menu = async() => {
         },    
     ]);
     
-
+//Switch case for menu choices to run functions defined below
     switch (answer.action) {
         case "View All Departments":
             getDepartment();
@@ -87,25 +87,25 @@ const menu = async() => {
             break;
     }
 }; 
-
+// Get Department query function
 const getDepartment = async () => {
     const departments = await db.promise().query("SELECT * FROM department")
     console.table(departments[0]);
     menu()
 }
-
+// Get roles query function
 const getRoles = async () => {
     const roles = await db.promise().query("SELECT roles.title, roles.salary, department.dept FROM roles LEFT JOIN department ON roles.dept_id=department.id")
     console.table(roles[0])
     menu()
 }
-
+// Get Employees query function
 const getEmployees = async () => {
     const employee = await db.promise().query("SELECT employee.first_name, employee.last_name, department.dept, roles.title, roles.salary, manager.last_name AS manager FROM employee LEFT JOIN roles ON roles.id=employee.roles_id LEFT JOIN department ON department.id=roles.dept_id LEFT JOIN employee manager ON manager.id=employee.manager_id")
     console.table(employee[0])
     menu()
 }
-
+// Starting inquirer prompts to add departments
 const addDepartment = async () => {
     const deptInput = await inquirer.prompt ([
         {
@@ -115,14 +115,14 @@ const addDepartment = async () => {
             
         },
       ]);
-
+// Query function to add department
     const iDepartment = await db.promise().query("INSERT INTO department SET?", deptInput)
     console.log("New Department Added")
     menu()
 }
-
+// Start inquirer prompts to add role
 const addRole = async () => { 
-    //Need function to grab all new departments?
+    //Add departments variable to make available to choices dropdown list
     const departments = await db.promise().query("SELECT * FROM department")
 
     const rolesInput = await inquirer.prompt ([
@@ -143,14 +143,14 @@ const addRole = async () => {
             choices: departments[0].map((dept) => ({name: dept.dept, value: dept.id}))
         },
       ]);
-
+// Query to add role input to database
     const iRole = await db.promise().query("INSERT INTO roles SET?", rolesInput)
     console.log("New Role Added")
     menu()
 };
-
+// Start inquirer prompts to add Employee
 const addEmployee = async () => {
-    // Need function to grab all new roles and departments
+    // Import roles query for choices in roles_id
     const roles = await db.promise().query("SELECT roles.title, roles.id FROM roles")
     const employees = await db.promise().query("SELECT employee.last_name, employee.id FROM employee")
 
@@ -180,13 +180,14 @@ const addEmployee = async () => {
         },
     
       ]);
-
+// Query to add Employee to dbase
     const iEmployee = await db.promise().query("INSERT INTO employee SET?", employeeInput)
     console.log("New Employee Added")
     menu()
 };
-
+// Starting update employee inquirer prompts
 const updateEmployee = async () => {
+    // making roles, employee available to inquirer choices
     const roles = await db.promise().query("SELECT roles.title, roles.id FROM roles")
     const employees = await db.promise().query("SELECT employee.last_name, employee.id FROM employee")
 
@@ -208,8 +209,7 @@ const updateEmployee = async () => {
     
       ]);
 
-
-
+      // Query for updating employees
     const uEmployee = await db.promise().query("UPDATE employee SET roles_id = ? WHERE id = ?", [employeeInput.roles_id, employeeInput.id])
     console.log("Employee has been updated")
     menu()
